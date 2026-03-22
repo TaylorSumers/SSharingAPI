@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using AspNetCore.Yandex.ObjectStorage;
-using AspNetCore.Yandex.ObjectStorage.Object;
 using AspNetCore.Yandex.ObjectStorage.Object.Responses;
-using FluentResults;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json.Serialization;
 using SecretsSharingAPI.Database;
 using SecretsSharingAPI.Models;
 using File = SecretsSharingAPI.Database.File;
@@ -23,17 +13,12 @@ namespace SecretsSharingAPI.Controllers
     [ApiController]
     public class FilesController : ControllerBase
     {
-
         private static DataContext db = new DataContext();
+        private readonly IYandexStorageService _objectStoreService;
 
-        private readonly YandexStorageService _objectStoreService;
-
-        private List<FileType> _fileTypes;
-
-        public FilesController(YandexStorageService yandexStorageService)
+        public FilesController(IYandexStorageService yandexStorageService)
         {
             _objectStoreService = yandexStorageService;
-            _fileTypes = db.FileType.ToList();
         }
 
 
@@ -74,14 +59,14 @@ namespace SecretsSharingAPI.Controllers
                 return NotFound("File not found");
 
             // Delete from cloud storage
-            if(file.FileType.ID == 1)
+            if (file.FileType.ID == 1)
             {
                 var cloudFileName = $"{file.Code}{file.Name.Substring(file.Name.Contains('.') ? file.Name.LastIndexOf('.') : 0)}";
                 var response = await _objectStoreService.ObjectService.DeleteAsync(cloudFileName);
                 if (!response.IsSuccessStatusCode)
                     return BadRequest(response);
             }
-            
+
             // Remove from db
             db.Files.Remove(file);
             db.SaveChanges();
@@ -157,7 +142,6 @@ namespace SecretsSharingAPI.Controllers
                 db.Files.Remove(file);
                 db.SaveChanges();
             }
-
             return Ok(new { fileName = file.Name, bytes = byteArr });
         }
 
