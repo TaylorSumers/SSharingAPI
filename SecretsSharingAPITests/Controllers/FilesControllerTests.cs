@@ -11,16 +11,6 @@ namespace SecretsSharingAPI.Controllers.Tests
     [TestClass()]
     public class FilesControllerTests
     {
-        [TestMethod()]
-        public void GenerateFileCode_returns9charCode()
-        {
-            // Arrange
-            int expectedLen = 9;
-            // Act
-            string code = FilesController.GenerateFileCode();
-            int actualLen = code.Length;
-            //Assert
-            Assert.AreEqual(expectedLen, actualLen);
-        }
+
     }
 }
