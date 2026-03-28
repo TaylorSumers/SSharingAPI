@@ -19,11 +19,13 @@ namespace Application.Files.Commands.Delete
 
         public async Task Handle(DeleteFileCommand request, CancellationToken cancellationToken) // TODO: Обработка исключений
         {
-            var dbFile = await _dbContext.Files.FirstOrDefaultAsync(note => note.Code == request.Code, cancellationToken);
+            var dbFile = await _dbContext.Files.FirstOrDefaultAsync(file => file.Code == file.Code, cancellationToken);
 
             // delete from cloud
-            S3ObjectDeleteResponse response = await _storageService.ObjectService.DeleteAsync(dbFile.Name);
+            var fileName = $"{dbFile.Code}{dbFile.Name.Substring(dbFile.Name.LastIndexOf('.'))}";
+            S3ObjectDeleteResponse response = await _storageService.ObjectService.DeleteAsync(fileName);
 
+            // delete from db
             _dbContext.Files.Remove(dbFile);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }

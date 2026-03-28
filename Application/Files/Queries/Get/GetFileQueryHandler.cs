@@ -6,7 +6,7 @@ using FluentResults;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Files.Queries.GetFile
+namespace Application.Files.Queries.Get
 {
     public class GetFileQueryHandler : IRequestHandler<GetFileQuery, FileVm>
     {
@@ -24,7 +24,8 @@ namespace Application.Files.Queries.GetFile
         public async Task<FileVm> Handle(GetFileQuery request, CancellationToken cancellationToken) 
         {
             var dbFile = await _dbContext.Files.FirstOrDefaultAsync(file => file.Code == request.Code, cancellationToken);
-            var fileName = $"{dbFile.Code.ToString().ToUpperInvariant()}{dbFile.Name.Substring(dbFile.Name.LastIndexOf('.'))}";
+
+            var fileName = $"{dbFile.Code}{dbFile.Name.Substring(dbFile.Name.LastIndexOf('.'))}";
             S3ObjectGetResponse result = await _storageService.ObjectService.GetAsync(fileName);
             var fileContent = await result.ReadAsByteArrayAsync();
 

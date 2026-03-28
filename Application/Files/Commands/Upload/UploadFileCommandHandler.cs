@@ -33,7 +33,7 @@ namespace Application.Files.Commands.Upload
             await _dbContext.Files.AddAsync(dbFile, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            return $"https://localhost:7146/api/Files/GetFile/code={dbFile.Code}"; // TODO: определять url хоста
+            return $"https://localhost:44306/api/Files/GetFile/code={dbFile.Code}"; // TODO: определять url хоста
         }
     }
 }
