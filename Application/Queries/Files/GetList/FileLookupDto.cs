@@ -1,7 +1,7 @@
 ﻿using Application.Common.Mappings;
 using AutoMapper;
 
-namespace Application.Files.Queries.GetList
+namespace Application.Queries.Files.GetList
 {
     public class FileLookupDto : IMapWith<Domain.File>
     {

@@ -1,9 +1,7 @@
-﻿using Application.Files.Commands.Delete;
-using Application.Files.Commands.Upload;
-using Application.Files.Queries.Get;
-using Application.Files.Queries.GetList;
-using Application.Queries.Strings.Get;
-using AutoMapper;
+﻿using Application.Commands.Files.Upload;
+using Application.Commands.Files.Delete;
+using Application.Queries.Files.Get;
+using Application.Queries.Files.GetList;
 using Microsoft.AspNetCore.Mvc;
 using SecretsSharingAPI.Models;
 

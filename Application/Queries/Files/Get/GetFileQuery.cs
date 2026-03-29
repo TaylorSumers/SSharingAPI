@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Application.Files.Queries.Get
+namespace Application.Queries.Files.Get
 {
     public class GetFileQuery : IRequest<FileVm>
     {

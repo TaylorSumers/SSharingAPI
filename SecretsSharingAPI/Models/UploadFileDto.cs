@@ -1,5 +1,5 @@
-﻿using Application.Common.Mappings;
-using Application.Files.Commands.Upload;
+﻿using Application.Commands.Files.Upload;
+using Application.Common.Mappings;
 using AutoMapper;
 
 namespace SecretsSharingAPI.Models

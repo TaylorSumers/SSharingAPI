@@ -5,12 +5,7 @@ namespace Application.Commands.Strings.Upload
 {
     public class UploadStringCommandHandler : HandlerBase<UploadStringCommand, string>
     {
-        private readonly YandexStorageService _storageService; // TODO: заменить на интерфейс
-
-        public UploadStringCommandHandler(ISecretsDbContext dbContext, YandexStorageService storageService) : base(dbContext)
-        {
-            _storageService = storageService;
-        }
+        public UploadStringCommandHandler(ISecretsDbContext dbContext, YandexStorageService storageService) : base(dbContext) { }
 
         public override async Task<string> Handle(UploadStringCommand request, CancellationToken cancellationToken)
         {

@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Application.Files.Commands.Delete
+namespace Application.Commands.Files.Delete
 {
     public class DeleteFileCommand : IRequest
     {

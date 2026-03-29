@@ -3,7 +3,7 @@ using AutoMapper;
 using static System.Net.WebRequestMethods;
 using DbFile = Domain.File;
 
-namespace Application.Files.Queries.Get
+namespace Application.Queries.Files.Get
 {
     public class FileVm : IMapWith<DbFile>
     {

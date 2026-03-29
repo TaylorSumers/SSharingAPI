@@ -4,7 +4,7 @@ using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Files.Queries.GetList
+namespace Application.Queries.Files.GetList
 {
     public class GetListQueryHandler : IRequestHandler<GetListQuery, List<FileLookupDto>>
     {

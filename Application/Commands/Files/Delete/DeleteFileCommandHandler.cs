@@ -4,7 +4,7 @@ using AspNetCore.Yandex.ObjectStorage.Object.Responses;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Files.Commands.Delete
+namespace Application.Commands.Files.Delete
 {
     public class DeleteStringCommandHandler : IRequestHandler<DeleteFileCommand>
     {

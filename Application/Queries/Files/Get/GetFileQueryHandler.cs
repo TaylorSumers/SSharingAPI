@@ -6,7 +6,7 @@ using FluentResults;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
-namespace Application.Files.Queries.Get
+namespace Application.Queries.Files.Get
 {
     public class GetFileQueryHandler : IRequestHandler<GetFileQuery, FileVm>
     {

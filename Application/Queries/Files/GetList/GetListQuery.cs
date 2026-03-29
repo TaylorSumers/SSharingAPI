@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Application.Files.Queries.GetList
+namespace Application.Queries.Files.GetList
 {
     public class GetListQuery : IRequest<List<FileLookupDto>>
     {

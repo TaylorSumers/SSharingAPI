@@ -4,7 +4,7 @@ using AspNetCore.Yandex.ObjectStorage.Object.Responses;
 using MediatR;
 using DbFile = Domain.File;
 
-namespace Application.Files.Commands.Upload
+namespace Application.Commands.Files.Upload
 {
     public class UploadStringCommandHandler : IRequestHandler<UploadStringCommand, string>
     {

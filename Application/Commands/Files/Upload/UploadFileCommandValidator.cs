@@ -1,8 +1,6 @@
-﻿
+﻿using FluentValidation;
 
-using FluentValidation;
-
-namespace Application.Files.Commands.Upload
+namespace Application.Commands.Files.Upload
 {
     public class UploadFileCommandValidator : AbstractValidator<UploadStringCommand>
     {

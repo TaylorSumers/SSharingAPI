@@ -6,12 +6,7 @@ namespace Application.Commands.Strings.Delete
 {
     public class DeleteStringCommandHandler : HandlerBase<DeleteStringCommand>
     {
-        private readonly YandexStorageService _storageService; // TODO: заменить на интерфейс
-
-        public DeleteStringCommandHandler(ISecretsDbContext dbContext, YandexStorageService storageService) : base(dbContext)
-        {
-            _storageService = storageService;
-        }
+        public DeleteStringCommandHandler(ISecretsDbContext dbContext, YandexStorageService storageService) : base(dbContext) { }
 
         public async override Task Handle(DeleteStringCommand request, CancellationToken cancellationToken) // TODO: Обработка исключений
         {

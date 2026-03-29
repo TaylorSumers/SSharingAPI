@@ -1,5 +1,4 @@
-﻿using Application.Files.Queries.GetList;
-using MediatR;
+﻿using MediatR;
 
 namespace Application.Queries.Strings.GetList
 {

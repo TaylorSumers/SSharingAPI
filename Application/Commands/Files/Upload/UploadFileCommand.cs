@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Application.Files.Commands.Upload
+namespace Application.Commands.Files.Upload
 {
     public class UploadStringCommand : IRequest<string>
     {
