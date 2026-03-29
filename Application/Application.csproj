@@ -21,7 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Strings\" />
+    <Folder Include="Commands\Files\" />
+    <Folder Include="Queries\Files\" />
   </ItemGroup>
 
 </Project>

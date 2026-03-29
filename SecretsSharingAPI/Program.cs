@@ -1,6 +1,5 @@
 ﻿using Application.Common.Mappings;
 using Application.Interfaces;
-using AspNetCore.Yandex.ObjectStorage.Extensions;
 using Persistence;
 using System.Reflection;
 using Application;

@@ -2,6 +2,7 @@
 using Application.Files.Commands.Upload;
 using Application.Files.Queries.Get;
 using Application.Files.Queries.GetList;
+using Application.Queries.Strings.Get;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SecretsSharingAPI.Models;
@@ -10,13 +11,6 @@ namespace SecretsSharingAPI.Controllers
 {
     public class FilesController : BaseController
     {
-        private readonly IMapper _mapper;
-        public FilesController(IMapper mapper)
-        {
-            _mapper = mapper;
-        }
-
-
         [HttpGet("{code}")]
         public async Task<ActionResult<FileVm>> Get(Guid code)
         {
@@ -29,7 +23,7 @@ namespace SecretsSharingAPI.Controllers
         }
 
         [HttpGet("{userId}")]
-        public async Task<ActionResult<List<FileVm>>> GetList(int userId)
+        public async Task<ActionResult<List<FileLookupDto>>> GetList(int userId)
         {
             var fileQuery = new GetListQuery
             {
@@ -42,7 +36,7 @@ namespace SecretsSharingAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Guid>> Upload([FromBody] UploadFileDto uploadFileDto)
         {
-            var uploadFileCommand = _mapper.Map<UploadFileCommand>(uploadFileDto);
+            var uploadFileCommand = Mapper.Map<UploadStringCommand>(uploadFileDto);
             var fileUrl = await Mediator.Send(uploadFileCommand);
             return Ok(fileUrl);
         }

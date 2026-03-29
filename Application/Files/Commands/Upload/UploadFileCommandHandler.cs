@@ -6,18 +6,18 @@ using DbFile = Domain.File;
 
 namespace Application.Files.Commands.Upload
 {
-    public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, string>
+    public class UploadStringCommandHandler : IRequestHandler<UploadStringCommand, string>
     {
         private readonly ISecretsDbContext _dbContext;
         private readonly YandexStorageService _storageService; // TODO: заменить на интерфейс
 
-        public UploadFileCommandHandler(ISecretsDbContext dbContext, YandexStorageService storageService)
+        public UploadStringCommandHandler(ISecretsDbContext dbContext, YandexStorageService storageService)
         {
             _dbContext = dbContext;
             _storageService = storageService;
         }
 
-        public async Task<string> Handle(UploadFileCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(UploadStringCommand request, CancellationToken cancellationToken)
         {
             //Send to cloud
             Guid fileCode = Guid.NewGuid();

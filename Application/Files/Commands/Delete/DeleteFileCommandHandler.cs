@@ -6,12 +6,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Files.Commands.Delete
 {
-    public class DeleteFileCommandHandler : IRequestHandler<DeleteFileCommand>
+    public class DeleteStringCommandHandler : IRequestHandler<DeleteFileCommand>
     {
         private readonly ISecretsDbContext _dbContext;
         private readonly YandexStorageService _storageService; // TODO: заменить на интерфейс
 
-        public DeleteFileCommandHandler(ISecretsDbContext dbContext, YandexStorageService storageService)
+        public DeleteStringCommandHandler(ISecretsDbContext dbContext, YandexStorageService storageService)
         {
             _dbContext = dbContext;
             _storageService = storageService;
