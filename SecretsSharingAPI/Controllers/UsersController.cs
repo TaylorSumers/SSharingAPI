@@ -9,8 +9,12 @@ namespace SecretsSharingAPI.Controllers
         [HttpGet]
         public async Task<ActionResult> GetId(string login, string password)
         {
-            var getQuery = new GetUserIdQuery { Login = login, Password = password };
-            return Ok(await Mediator.Send(getQuery));
+            var getQuery = new GetUserIdQuery { 
+                Login = login,
+                Password = password 
+            };
+            int userId = await Mediator.Send(getQuery);
+            return Ok(userId);
         }
 
         [HttpPost]
@@ -21,7 +25,14 @@ namespace SecretsSharingAPI.Controllers
                 Login = login,
                 Password = password
             };
-            await Mediator.Send(createCmd);
+            try
+            {
+                await Mediator.Send(createCmd);
+            }
+            catch (CreateUserException ex)
+            {
+                throw ex; // TODO: Ошибка должна отлавливаться в CustomExceptionHandlerMiddleware без перебрасывания
+            }
             return NoContent();
         }
     }

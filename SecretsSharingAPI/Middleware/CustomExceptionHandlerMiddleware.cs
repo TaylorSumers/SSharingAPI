@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Text.Json;
+using Application.Commands.Users.Create;
 
 namespace SecretsSharingAPI.Middleware
 {
@@ -29,9 +30,13 @@ namespace SecretsSharingAPI.Middleware
             var result = string.Empty;
             switch (ex) 
             {
-                case ValidationException validationException:
+                case ValidationException validationEx:
                     code = HttpStatusCode.BadRequest;
-                    result = JsonSerializer.Serialize(validationException.Errors);
+                    result = JsonSerializer.Serialize(validationEx.Errors);
+                    break;
+                case CreateUserException createUserEx:
+                    code = HttpStatusCode.BadRequest;
+                    result = JsonSerializer.Serialize(createUserEx.Message);
                     break;
             }
             context.Response.ContentType = "application/json";

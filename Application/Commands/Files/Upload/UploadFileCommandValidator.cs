@@ -6,8 +6,8 @@ namespace Application.Commands.Files.Upload
     {
         public UploadFileCommandValidator()
         {
-            RuleFor(uploadFileCommand => uploadFileCommand.FileContent).NotEmpty();
-            RuleFor(uploadFileCommand => uploadFileCommand.Name).NotEmpty();
+            RuleFor(cmd => cmd.FileContent).NotEmpty();
+            RuleFor(cmd => cmd.Name).NotEmpty();
         }
     }
 }

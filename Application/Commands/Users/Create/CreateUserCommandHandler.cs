@@ -9,6 +9,11 @@ namespace Application.Commands.Users.Create
 
         public async override Task Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
+            if (_dbContext.Users.Any(user => user.Login == request.Login))
+            {
+                throw new CreateUserException(request.Login);
+            }
+
             var dbUser = new User
             {
                 Login = request.Login,

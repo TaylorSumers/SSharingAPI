@@ -20,7 +20,7 @@ namespace Application.Commands.Strings.Upload
             await _dbContext.Strings.AddAsync(dbString, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            return $"https://localhost:44306/api/Strings/Get/code={dbString.Code}"; // TODO: определять url хоста
+            return $"https://localhost:44306/api/Strings/Get/{dbString.Code}"; // TODO: заменить хардкод
         }
     }
 }

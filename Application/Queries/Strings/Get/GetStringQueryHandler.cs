@@ -1,4 +1,5 @@
 ﻿using Application.Commands;
+using Application.Common.Exceptions;
 using Application.Interfaces;
 using AspNetCore.Yandex.ObjectStorage;
 using AutoMapper;
@@ -18,6 +19,10 @@ namespace Application.Queries.Strings.Get
         public async override Task<StringVm> Handle(GetStringQuery request, CancellationToken cancellationToken) 
         {
             var dbStr = await _dbContext.Strings.FirstOrDefaultAsync(str => str.Code == request.Code, cancellationToken);
+            if (dbStr is null)
+            {
+                throw new NotFoundException(nameof(Domain.String), request.Code);
+            }
             return _mapper.Map<StringVm>(dbStr);
         }
     }

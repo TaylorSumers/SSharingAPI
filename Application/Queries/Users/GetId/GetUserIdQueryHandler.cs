@@ -11,11 +11,11 @@ namespace Application.Queries.Users.GetId
         public async override Task<int> Handle(GetUserIdQuery request, CancellationToken cancellationToken)
         {
             var dbUser = await _dbContext.Users.FirstOrDefaultAsync(user => user.Login == request.Login, cancellationToken);
-            if (dbUser.PasswordHash == request.Password.GetHashCode())
+            if (dbUser is null || dbUser.PasswordHash != request.Password.GetHashCode())
             {
-                return dbUser.Id;
+                throw new InvalidCredentialsException();
             }
-            throw new Exception();
+            return dbUser.Id;
         }
     }
 }
