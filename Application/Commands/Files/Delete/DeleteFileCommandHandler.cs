@@ -1,6 +1,6 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Interfaces;
 using AspNetCore.Yandex.ObjectStorage;
-using AspNetCore.Yandex.ObjectStorage.Object.Responses;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,10 +20,19 @@ namespace Application.Commands.Files.Delete
         public async Task Handle(DeleteFileCommand request, CancellationToken cancellationToken) // TODO: Обработка исключений
         {
             var dbFile = await _dbContext.Files.FirstOrDefaultAsync(file => file.Code == file.Code, cancellationToken);
+            if (dbFile is null) 
+            {
+                throw new NotFoundException(nameof(Domain.File), request.Code);
+            }
 
             // delete from cloud
             var fileName = $"{dbFile.Code}{dbFile.Name.Substring(dbFile.Name.LastIndexOf('.'))}";
-            S3ObjectDeleteResponse response = await _storageService.ObjectService.DeleteAsync(fileName);
+            var response = await _storageService.ObjectService.DeleteAsync(fileName);
+            if (!response.IsSuccessStatusCode)
+            {
+                var content = await response.ReadResultAsStringAsync();
+                throw new S3RequestException(content.Errors);
+            }
 
             // delete from db
             _dbContext.Files.Remove(dbFile);

@@ -1,8 +1,9 @@
-﻿using FluentValidation;
+﻿using Application.Commands.Users.Create;
+using Application.Common.Exceptions;
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using System.Text.Json;
-using Application.Commands.Users.Create;
 
 namespace SecretsSharingAPI.Middleware
 {
@@ -34,9 +35,14 @@ namespace SecretsSharingAPI.Middleware
                     code = HttpStatusCode.BadRequest;
                     result = JsonSerializer.Serialize(validationEx.Errors);
                     break;
-                case CreateUserException createUserEx:
+                case CreateUserException:
                     code = HttpStatusCode.BadRequest;
-                    result = JsonSerializer.Serialize(createUserEx.Message);
+                    break;
+                case NotFoundException:
+                    code = HttpStatusCode.NotFound;
+                    break;
+                case S3RequestException:
+                    code = HttpStatusCode.BadGateway;
                     break;
             }
             context.Response.ContentType = "application/json";

@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Interfaces;
 using AspNetCore.Yandex.ObjectStorage;
 using AspNetCore.Yandex.ObjectStorage.Object.Responses;
 using AutoMapper;
@@ -23,15 +24,25 @@ namespace Application.Queries.Files.Get
 
         public async Task<FileVm> Handle(GetFileQuery request, CancellationToken cancellationToken) 
         {
+            // Get from db
             var dbFile = await _dbContext.Files.FirstOrDefaultAsync(file => file.Code == request.Code, cancellationToken);
+            if (dbFile is null)
+            {
+                throw new NotFoundException(nameof(Domain.File), request.Code);
+            }
 
-            var fileName = $"{dbFile.Code}{dbFile.Name.Substring(dbFile.Name.LastIndexOf('.'))}";
-            S3ObjectGetResponse result = await _storageService.ObjectService.GetAsync(fileName);
-            var fileContent = await result.ReadAsByteArrayAsync();
+            
+            // Get from cloud
+            var fileName = $"{dbFile.Code}{dbFile.Name.Substring(dbFile.Name.LastIndexOf('.'))}"; // TODO: вынести в свойство
+            var result = await _storageService.ObjectService.GetAsync(fileName);
+            var content = await result.ReadAsByteArrayAsync();
+            if (!result.IsSuccessStatusCode)
+            {
+                throw new S3RequestException(content.Errors);
+            }
 
-            FileVm fileVm = _mapper.Map<FileVm>(dbFile);
-            fileVm.Content = fileContent.Value;
-
+            var fileVm = _mapper.Map<FileVm>(dbFile);
+            fileVm.Content = content.Value;
             return fileVm;
         }
     }
