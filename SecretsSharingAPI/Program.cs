@@ -31,6 +31,8 @@ namespace SecretsSharingAPI
             });
             builder.Services.AddControllers();
 
+            builder.Services.AddHttpContextAccessor();
+
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
@@ -43,7 +45,7 @@ namespace SecretsSharingAPI
                 }
                 catch (Exception ex)
                 {
-                    // TODO: catch ex
+                    Console.WriteLine("An error occurred while app initialization " + ex.Message);
                 }
             }
 

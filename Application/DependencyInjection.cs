@@ -1,4 +1,5 @@
 ﻿using Application.Common.Behaviours;
+using AspNetCore.Yandex.ObjectStorage;
 using AspNetCore.Yandex.ObjectStorage.Extensions;
 using FluentValidation;
 using MediatR;
@@ -19,6 +20,7 @@ namespace Application
                 options.AccessKey = configuration["S3AccessKey"];
                 options.SecretKey = configuration["S3SecretKey"];
             });
+            services.AddScoped<IYandexStorageService>(provider => provider.GetService<YandexStorageService>());
             services.AddValidatorsFromAssembly(assembly);
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
             services.AddMediatR(options => options.RegisterServicesFromAssembly(assembly));

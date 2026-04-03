@@ -6,18 +6,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Commands.Files.Delete
 {
-    public class DeleteFileCommandHandler : IRequestHandler<DeleteFileCommand>
+    public class DeleteFileCommandHandler : HandlerBase<DeleteFileCommand>
     {
-        private readonly ISecretsDbContext _dbContext;
-        private readonly YandexStorageService _storageService; // TODO: заменить на интерфейс
+        private readonly IYandexStorageService _storageService;
 
-        public DeleteFileCommandHandler(ISecretsDbContext dbContext, YandexStorageService storageService)
+        public DeleteFileCommandHandler(ISecretsDbContext dbContext, IYandexStorageService storageService) : base(dbContext)
         {
-            _dbContext = dbContext;
             _storageService = storageService;
         }
 
-        public async Task Handle(DeleteFileCommand request, CancellationToken cancellationToken)
+        public override async Task Handle(DeleteFileCommand request, CancellationToken cancellationToken)
         {
             var dbFile = await _dbContext.Files.FirstOrDefaultAsync(file => file.Code == file.Code, cancellationToken);
             if (dbFile is null) 

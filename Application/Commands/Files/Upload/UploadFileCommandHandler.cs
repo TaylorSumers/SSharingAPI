@@ -1,24 +1,25 @@
 ﻿using Application.Common.Exceptions;
 using Application.Interfaces;
 using AspNetCore.Yandex.ObjectStorage;
-using AspNetCore.Yandex.ObjectStorage.Object.Responses;
 using MediatR;
+using Microsoft.Extensions.Configuration;
+using System.Buffers.Text;
 using DbFile = Domain.File;
 
 namespace Application.Commands.Files.Upload
 {
-    public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, string>
+    public class UploadFileCommandHandler : HandlerBase<UploadFileCommand, string>
     {
-        private readonly ISecretsDbContext _dbContext;
-        private readonly YandexStorageService _storageService; // TODO: заменить на интерфейс
+        private readonly IYandexStorageService _storageService;
+        private readonly IConfiguration _configuration;
 
-        public UploadFileCommandHandler(ISecretsDbContext dbContext, YandexStorageService storageService)
+        public UploadFileCommandHandler(ISecretsDbContext dbContext, IYandexStorageService storageService, IConfiguration configuration) : base(dbContext)
         {
-            _dbContext = dbContext;
             _storageService = storageService;
+            _configuration = configuration;
         }
 
-        public async Task<string> Handle(UploadFileCommand request, CancellationToken cancellationToken)
+        public override async Task<string> Handle(UploadFileCommand request, CancellationToken cancellationToken)
         {
             //Send to cloud
             var fileCode = Guid.NewGuid();
@@ -40,7 +41,7 @@ namespace Application.Commands.Files.Upload
             await _dbContext.Files.AddAsync(dbFile, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            return $"https://localhost:44306/api/Files/GetFile/{dbFile.Code}"; // TODO: Убрать хардкод
+            return $"{_configuration["PublicApiBaseUrl"]}/api/Files/Get/{fileCode}";
         }
     }
 }

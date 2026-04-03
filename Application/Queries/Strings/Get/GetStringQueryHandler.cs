@@ -3,16 +3,19 @@ using Application.Interfaces;
 using AspNetCore.Yandex.ObjectStorage;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Application.Queries.Strings.Get
 {
-    public class GetFileQueryHandler : HandlerBase<GetStringQuery, StringVm>
+    public class GetStringQueryHandler : HandlerBase<GetStringQuery, StringVm>
     {
         private readonly IMapper _mapper;
+        private readonly IConfiguration _configuration;
 
-        public GetFileQueryHandler(ISecretsDbContext dbContext, IMapper mapper, YandexStorageService storageService) : base(dbContext)
+        public GetStringQueryHandler(ISecretsDbContext dbContext, IMapper mapper, IConfiguration configuration) : base(dbContext)
         {
             _mapper = mapper;
+            _configuration = configuration;
         }
 
         public async override Task<StringVm> Handle(GetStringQuery request, CancellationToken cancellationToken) 
@@ -22,7 +25,10 @@ namespace Application.Queries.Strings.Get
             {
                 throw new NotFoundException(nameof(Domain.String), request.Code);
             }
-            return _mapper.Map<StringVm>(dbStr);
+
+            var strVm = _mapper.Map<StringVm>(dbStr);
+            strVm.GetUrl = $"{_configuration["PublicApiBaseUrl"]}/api/Strings/Get/{dbStr.Code}";
+            return strVm;
         }
     }
 }

@@ -25,7 +25,7 @@ namespace SecretsSharingAPI.Middleware
             }
         }
 
-        private Task HandleExceptionAsync(HttpContext context, Exception ex)
+        private async Task HandleExceptionAsync(HttpContext context, Exception ex)
         {
             var code = HttpStatusCode.InternalServerError;
             var result = string.Empty;
@@ -53,7 +53,7 @@ namespace SecretsSharingAPI.Middleware
                 result = JsonSerializer.Serialize(new { error = ex.Message });
             }
 
-            return context.Response.WriteAsync(result);
+            await context.Response.WriteAsync(result);
         }
     }
 }

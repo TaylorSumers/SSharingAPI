@@ -6,23 +6,24 @@ using AutoMapper;
 using FluentResults;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace Application.Queries.Files.Get
 {
-    public class GetFileQueryHandler : IRequestHandler<GetFileQuery, FileVm>
+    public class GetFileQueryHandler : HandlerBase<GetFileQuery, FileVm>
     {
-        private readonly ISecretsDbContext _dbContext;
         private readonly IMapper _mapper;
-        private readonly YandexStorageService _storageService; // TODO: заменить на интерфейс
+        private readonly IYandexStorageService _storageService;
+        private readonly IConfiguration _configuration;
 
-        public GetFileQueryHandler(ISecretsDbContext dbContext, IMapper mapper, YandexStorageService storageService)
+        public GetFileQueryHandler(ISecretsDbContext dbContext, IMapper mapper, IYandexStorageService storageService, IConfiguration configuration) : base(dbContext)
         {
-            _dbContext = dbContext;
             _mapper = mapper;
             _storageService = storageService;
+            _configuration = configuration;
         }
 
-        public async Task<FileVm> Handle(GetFileQuery request, CancellationToken cancellationToken) 
+        public async override Task<FileVm> Handle(GetFileQuery request, CancellationToken cancellationToken) 
         {
             // Get from db
             var dbFile = await _dbContext.Files.FirstOrDefaultAsync(file => file.Code == request.Code, cancellationToken);
@@ -31,7 +32,6 @@ namespace Application.Queries.Files.Get
                 throw new NotFoundException(nameof(Domain.File), request.Code);
             }
 
-            
             // Get from cloud
             var cloudFileName = $"{dbFile.Code}{dbFile.Name.Substring(dbFile.Name.LastIndexOf('.'))}";
             var result = await _storageService.ObjectService.GetAsync(cloudFileName);
@@ -43,6 +43,7 @@ namespace Application.Queries.Files.Get
 
             var fileVm = _mapper.Map<FileVm>(dbFile);
             fileVm.Content = content.Value;
+            fileVm.GetUrl = $"{_configuration["PublicApiBaseUrl"]}/api/Files/Get/{dbFile.Code}";
             return fileVm;
         }
     }

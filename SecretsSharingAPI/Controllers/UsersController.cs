@@ -25,14 +25,8 @@ namespace SecretsSharingAPI.Controllers
                 Login = login,
                 Password = password
             };
-            try
-            {
-                await Mediator.Send(createCmd);
-            }
-            catch (CreateUserException ex)
-            {
-                throw ex; // TODO: Ошибка должна отлавливаться в CustomExceptionHandlerMiddleware без перебрасывания
-            }
+            await Mediator.Send(createCmd);
+
             return NoContent();
         }
     }

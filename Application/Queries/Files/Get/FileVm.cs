@@ -17,8 +17,7 @@ namespace Application.Queries.Files.Get
             profile.CreateMap<DbFile, FileVm>()
                 .ForMember(fileVm => fileVm.Name, opt => opt.MapFrom(dbFile => dbFile.Name))
                 .ForMember(fileVm => fileVm.DeleteAfterDownload, opt => opt.MapFrom(dbFile => dbFile.DeleteAfterDownload))
-                .ForMember(fileVm => fileVm.Code, opt => opt.MapFrom(dbFile => dbFile.Code))
-                .ForMember(fileVm => fileVm.GetUrl, opt => opt.MapFrom(dbFile => $"https://localhost:7146/api/Files/GetFile/{dbFile.Code}")); // TODO: убрать хардкод
+                .ForMember(fileVm => fileVm.Code, opt => opt.MapFrom(dbFile => dbFile.Code));
         }
     }
 }

@@ -6,18 +6,16 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Queries.Files.GetList
 {
-    public class GetListQueryHandler : IRequestHandler<GetListQuery, List<FileLookupDto>>
+    public class GetListQueryHandler : HandlerBase<GetListQuery, List<FileLookupDto>>
     {
-        private readonly ISecretsDbContext _dbContext;
         private readonly IMapper _mapper;
 
-        public GetListQueryHandler(ISecretsDbContext dbContext, IMapper mapper)
+        public GetListQueryHandler(ISecretsDbContext dbContext, IMapper mapper) : base(dbContext)
         {
-            _dbContext = dbContext;
             _mapper = mapper;
         }
 
-        public async Task<List<FileLookupDto>> Handle(GetListQuery request, CancellationToken cancellationToken)
+        public override async Task<List<FileLookupDto>> Handle(GetListQuery request, CancellationToken cancellationToken)
         {
             var files = await _dbContext.Files
                 .Where(file => file.UserId == request.UserId)

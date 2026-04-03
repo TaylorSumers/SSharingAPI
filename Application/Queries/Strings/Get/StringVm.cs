@@ -14,8 +14,7 @@ namespace Application.Queries.Strings.Get
             profile.CreateMap<Domain.String, StringVm>()
                 .ForMember(stringVm => stringVm.Value, opt => opt.MapFrom(dbFile => dbFile.Value))
                 .ForMember(stringVm => stringVm.DeleteAfterDownload, opt => opt.MapFrom(dbFile => dbFile.DeleteAfterDownload))
-                .ForMember(stringVm => stringVm.Code, opt => opt.MapFrom(dbFile => dbFile.Code))
-                .ForMember(stringVm => stringVm.GetUrl, opt => opt.MapFrom(dbFile => $"https://localhost:7146/api/Strings/Get/{dbFile.Code}")); // TODO: убрать хардкод
+                .ForMember(stringVm => stringVm.Code, opt => opt.MapFrom(dbFile => dbFile.Code));
         }
     }
 }
