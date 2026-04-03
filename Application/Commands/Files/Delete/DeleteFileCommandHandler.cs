@@ -6,18 +6,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.Commands.Files.Delete
 {
-    public class DeleteStringCommandHandler : IRequestHandler<DeleteFileCommand>
+    public class DeleteFileCommandHandler : IRequestHandler<DeleteFileCommand>
     {
         private readonly ISecretsDbContext _dbContext;
         private readonly YandexStorageService _storageService; // TODO: заменить на интерфейс
 
-        public DeleteStringCommandHandler(ISecretsDbContext dbContext, YandexStorageService storageService)
+        public DeleteFileCommandHandler(ISecretsDbContext dbContext, YandexStorageService storageService)
         {
             _dbContext = dbContext;
             _storageService = storageService;
         }
 
-        public async Task Handle(DeleteFileCommand request, CancellationToken cancellationToken) // TODO: Обработка исключений
+        public async Task Handle(DeleteFileCommand request, CancellationToken cancellationToken)
         {
             var dbFile = await _dbContext.Files.FirstOrDefaultAsync(file => file.Code == file.Code, cancellationToken);
             if (dbFile is null) 
@@ -26,8 +26,8 @@ namespace Application.Commands.Files.Delete
             }
 
             // delete from cloud
-            var fileName = $"{dbFile.Code}{dbFile.Name.Substring(dbFile.Name.LastIndexOf('.'))}";
-            var response = await _storageService.ObjectService.DeleteAsync(fileName);
+            var cloudFileName = $"{dbFile.Code}{dbFile.Name.Substring(dbFile.Name.LastIndexOf('.'))}";
+            var response = await _storageService.ObjectService.DeleteAsync(cloudFileName);
             if (!response.IsSuccessStatusCode)
             {
                 var content = await response.ReadResultAsStringAsync();

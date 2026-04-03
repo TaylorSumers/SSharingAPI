@@ -10,6 +10,6 @@ namespace Application.Interfaces
         public DbSet<User> Users { get; set; }
         public DbSet<File> Files { get; set; }
         public DbSet<String> Strings { get; set; }
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken); // TODO: чекнуть инфу про cancellationToken
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

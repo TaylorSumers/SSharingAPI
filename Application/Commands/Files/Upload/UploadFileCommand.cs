@@ -2,7 +2,7 @@
 
 namespace Application.Commands.Files.Upload
 {
-    public class UploadStringCommand : IRequest<string>
+    public class UploadFileCommand : IRequest<string>
     {
         public int UserId { get; set; }
         public string Name { get; set; }

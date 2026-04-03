@@ -1,8 +1,8 @@
 ﻿using Application.Interfaces;
 using MediatR;
 
-namespace Application.Commands 
-{   // TODO: Handler есть и для commands, и для queries. Вынести в общую директорию
+namespace Application 
+{
     public abstract class HandlerBase<TRequest, TResponse> : IRequestHandler<TRequest, TResponse> where TRequest : IRequest<TResponse>
     {
         protected readonly ISecretsDbContext _dbContext;

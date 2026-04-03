@@ -9,7 +9,7 @@ namespace Application.Commands.Strings.Delete
     {
         public DeleteStringCommandHandler(ISecretsDbContext dbContext, YandexStorageService storageService) : base(dbContext) { }
 
-        public async override Task Handle(DeleteStringCommand request, CancellationToken cancellationToken) // TODO: Обработка исключений
+        public async override Task Handle(DeleteStringCommand request, CancellationToken cancellationToken)
         {
             var dbStr = await _dbContext.Strings.FirstOrDefaultAsync(str => str.Code == str.Code, cancellationToken);
             if (dbStr is null)

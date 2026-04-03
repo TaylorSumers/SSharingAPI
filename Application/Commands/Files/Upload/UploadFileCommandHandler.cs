@@ -7,22 +7,23 @@ using DbFile = Domain.File;
 
 namespace Application.Commands.Files.Upload
 {
-    public class UploadStringCommandHandler : IRequestHandler<UploadStringCommand, string>
+    public class UploadFileCommandHandler : IRequestHandler<UploadFileCommand, string>
     {
         private readonly ISecretsDbContext _dbContext;
         private readonly YandexStorageService _storageService; // TODO: заменить на интерфейс
 
-        public UploadStringCommandHandler(ISecretsDbContext dbContext, YandexStorageService storageService)
+        public UploadFileCommandHandler(ISecretsDbContext dbContext, YandexStorageService storageService)
         {
             _dbContext = dbContext;
             _storageService = storageService;
         }
 
-        public async Task<string> Handle(UploadStringCommand request, CancellationToken cancellationToken)
+        public async Task<string> Handle(UploadFileCommand request, CancellationToken cancellationToken)
         {
             //Send to cloud
-            Guid fileCode = Guid.NewGuid();
-            var response = await _storageService.ObjectService.PutAsync(request.FileContent, $"{fileCode}{request.Name.Substring(request.Name.LastIndexOf('.'))}"); // TODO: получать название для хранения в S3 отдельном методе
+            var fileCode = Guid.NewGuid();
+            var cloudFileName = $"{fileCode}{request.Name.Substring(request.Name.LastIndexOf('.'))}";
+            var response = await _storageService.ObjectService.PutAsync(request.FileContent, cloudFileName);
             if (!response.IsSuccessStatusCode)
             {
                 var content = await response.ReadResultAsStringAsync();
@@ -39,7 +40,7 @@ namespace Application.Commands.Files.Upload
             await _dbContext.Files.AddAsync(dbFile, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);
 
-            return $"https://localhost:44306/api/Files/GetFile/code={dbFile.Code}"; // TODO: определять url хоста
+            return $"https://localhost:44306/api/Files/GetFile/{dbFile.Code}"; // TODO: Убрать хардкод
         }
     }
 }

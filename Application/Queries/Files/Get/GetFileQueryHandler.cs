@@ -33,8 +33,8 @@ namespace Application.Queries.Files.Get
 
             
             // Get from cloud
-            var fileName = $"{dbFile.Code}{dbFile.Name.Substring(dbFile.Name.LastIndexOf('.'))}"; // TODO: вынести в свойство
-            var result = await _storageService.ObjectService.GetAsync(fileName);
+            var cloudFileName = $"{dbFile.Code}{dbFile.Name.Substring(dbFile.Name.LastIndexOf('.'))}";
+            var result = await _storageService.ObjectService.GetAsync(cloudFileName);
             var content = await result.ReadAsByteArrayAsync();
             if (!result.IsSuccessStatusCode)
             {

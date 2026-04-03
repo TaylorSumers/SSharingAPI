@@ -1,5 +1,4 @@
-﻿using Application.Commands;
-using Application.Interfaces;
+﻿using Application.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;

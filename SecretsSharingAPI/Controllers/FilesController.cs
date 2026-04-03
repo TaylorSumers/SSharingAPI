@@ -34,7 +34,7 @@ namespace SecretsSharingAPI.Controllers
         [HttpPost]
         public async Task<ActionResult<Guid>> Upload([FromBody] UploadFileDto uploadFileDto)
         {
-            var uploadFileCommand = Mapper.Map<UploadStringCommand>(uploadFileDto);
+            var uploadFileCommand = Mapper.Map<UploadFileCommand>(uploadFileDto);
             var fileUrl = await Mediator.Send(uploadFileCommand);
             return Ok(fileUrl);
         }

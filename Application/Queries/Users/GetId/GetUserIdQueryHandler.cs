@@ -1,5 +1,4 @@
-﻿using Application.Commands;
-using Application.Interfaces;
+﻿using Application.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Queries.Users.GetId

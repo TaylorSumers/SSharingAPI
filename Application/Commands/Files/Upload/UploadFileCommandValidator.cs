@@ -2,7 +2,7 @@
 
 namespace Application.Commands.Files.Upload
 {
-    public class UploadFileCommandValidator : AbstractValidator<UploadStringCommand>
+    public class UploadFileCommandValidator : AbstractValidator<UploadFileCommand>
     {
         public UploadFileCommandValidator()
         {

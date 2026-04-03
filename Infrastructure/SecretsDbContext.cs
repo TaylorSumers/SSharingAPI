@@ -12,6 +12,6 @@ namespace Persistence
         public DbSet<File> Files { get; set; }
         public DbSet<String> Strings { get; set; }
 
-        public SecretsDbContext(DbContextOptions<SecretsDbContext> options) : base(options) { } // TODO: Зачем нужен параметр
+        public SecretsDbContext(DbContextOptions<SecretsDbContext> options) : base(options) { }
     }
 }
