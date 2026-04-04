@@ -17,6 +17,16 @@ namespace SecretsSharingAPI.Controllers
                 Code = code
             };
             var fileVm = await Mediator.Send(fileQuery);
+
+            if (fileVm.DeleteAfterDownload)
+            {
+                var delCmd = new DeleteFileCommand
+                {
+                    Code = fileQuery.Code,
+                };
+                await Mediator.Send(delCmd);
+            }
+
             return Ok(fileVm);
         }
 

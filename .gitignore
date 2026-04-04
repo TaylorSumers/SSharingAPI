@@ -362,3 +362,5 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /SecretsSharingAPI/secrets.db
+/SecretsSharingAPI/secrets.db-shm
+/SecretsSharingAPI/secrets.db-wal

@@ -17,6 +17,16 @@ namespace SecretsSharingAPI.Controllers
                 Code = code
             };
             var strVm = await Mediator.Send(strQuery);
+
+            if (strVm.DeleteAfterDownload)
+            {
+                var delCmd = new DeleteStringCommand
+                {
+                    Code = strQuery.Code
+                };
+                await Mediator.Send(delCmd);
+            }
+
             return Ok(strVm);
         }
 
