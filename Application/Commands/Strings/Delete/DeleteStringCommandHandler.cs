@@ -11,7 +11,7 @@ namespace Application.Commands.Strings.Delete
 
         public async override Task Handle(DeleteStringCommand request, CancellationToken cancellationToken)
         {
-            var dbStr = await _dbContext.Strings.FirstOrDefaultAsync(str => str.Code == str.Code, cancellationToken);
+            var dbStr = await _dbContext.Strings.FirstOrDefaultAsync(str => str.Code == request.Code, cancellationToken);
             if (dbStr is null)
             {
                 throw new NotFoundException(nameof(Domain.String), request.Code);

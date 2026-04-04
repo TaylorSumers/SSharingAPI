@@ -17,7 +17,7 @@ namespace Application.Commands.Files.Delete
 
         public override async Task Handle(DeleteFileCommand request, CancellationToken cancellationToken)
         {
-            var dbFile = await _dbContext.Files.FirstOrDefaultAsync(file => file.Code == file.Code, cancellationToken);
+            var dbFile = await _dbContext.Files.FirstOrDefaultAsync(file => file.Code == request.Code, cancellationToken);
             if (dbFile is null) 
             {
                 throw new NotFoundException(nameof(Domain.File), request.Code);
