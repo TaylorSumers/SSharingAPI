@@ -33,7 +33,7 @@ namespace Application.Queries.Files.Get
             }
 
             // Get from cloud
-            var cloudFileName = $"{dbFile.Code}{dbFile.Name.Substring(dbFile.Name.LastIndexOf('.'))}";
+            var cloudFileName = $"{dbFile.Code}{Path.GetExtension(dbFile.Name)}";
             var result = await _storageService.ObjectService.GetAsync(cloudFileName);
             var content = await result.ReadAsByteArrayAsync();
             if (!result.IsSuccessStatusCode)

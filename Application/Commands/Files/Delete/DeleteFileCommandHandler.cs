@@ -1,7 +1,6 @@
 ﻿using Application.Common.Exceptions;
 using Application.Interfaces;
 using AspNetCore.Yandex.ObjectStorage;
-using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace Application.Commands.Files.Delete
@@ -24,7 +23,7 @@ namespace Application.Commands.Files.Delete
             }
 
             // delete from cloud
-            var cloudFileName = $"{dbFile.Code}{dbFile.Name.Substring(dbFile.Name.LastIndexOf('.'))}";
+            var cloudFileName = $"{dbFile.Code}{Path.GetExtension(dbFile.Name)}";
             var response = await _storageService.ObjectService.DeleteAsync(cloudFileName);
             if (!response.IsSuccessStatusCode)
             {
