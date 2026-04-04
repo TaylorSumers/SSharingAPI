@@ -7,26 +7,16 @@ namespace SecretsSharingAPI.Controllers
     public class UsersController : BaseController
     {
         [HttpGet]
-        public async Task<ActionResult> GetId(string login, string password)
+        public async Task<ActionResult> GetId(GetUserIdQuery getUserIdQuery)
         {
-            var getQuery = new GetUserIdQuery { 
-                Login = login,
-                Password = password 
-            };
-            int userId = await Mediator.Send(getQuery);
+            int userId = await Mediator.Send(getUserIdQuery);
             return Ok(userId);
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(string login, string password)
+        public async Task<ActionResult> Create(CreateUserCommand createUserCommand)
         {
-            var createCmd = new CreateUserCommand
-            {
-                Login = login,
-                Password = password
-            };
-            await Mediator.Send(createCmd);
-
+            await Mediator.Send(createUserCommand);
             return NoContent();
         }
     }
