@@ -9,9 +9,13 @@ namespace SecretsSharingAPI.Controllers
     [Route("api/[controller]/[action]")]
     public abstract class BaseController : ControllerBase
     {
-        private IMediator _mediator;
-        private IMapper _mapper;
-        protected IMediator Mediator => _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
-        protected IMapper Mapper => _mapper ??= HttpContext.RequestServices.GetService<IMapper>();
+        protected BaseController(IMediator mediator, IMapper mapper)
+        {
+            Mediator = mediator;
+            Mapper = mapper;
+        }
+
+        protected IMediator Mediator { get; }
+        protected IMapper Mapper { get; }
     }
 }

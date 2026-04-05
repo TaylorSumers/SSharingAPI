@@ -1,5 +1,6 @@
 ﻿using Application.Commands.Users.Create;
 using Application.Common.Exceptions;
+using Application.Queries.Users.GetId;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -43,6 +44,12 @@ namespace SecretsSharingAPI.Middleware
                     break;
                 case S3RequestException:
                     code = HttpStatusCode.BadGateway;
+                    break;
+                case InvalidCredentialsException:
+                    code = HttpStatusCode.Unauthorized;
+                    break;
+                case FormatException: // Может быть брошено при чтении файла методом FromBase64String
+                    code = HttpStatusCode.BadRequest;
                     break;
             }
             context.Response.ContentType = "application/json";

@@ -36,7 +36,8 @@ namespace Application.Commands.Files.Upload
             {
                 Name = request.Name,
                 Code = fileCode,
-                DeleteAfterDownload = request.DeleteAfterDownload
+                DeleteAfterDownload = request.DeleteAfterDownload,
+                UserId = request.UserId
             };
             await _dbContext.Files.AddAsync(dbFile, cancellationToken);
             await _dbContext.SaveChangesAsync(cancellationToken);

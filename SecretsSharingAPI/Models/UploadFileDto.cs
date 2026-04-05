@@ -16,7 +16,6 @@ namespace SecretsSharingAPI.Models
             profile.CreateMap<UploadFileDto, UploadFileCommand>()
                 .ForMember(command => command.UserId, opt => opt.MapFrom(dto => dto.UserId))
                 .ForMember(command => command.Name, opt => opt.MapFrom(dto => dto.Name))
-                .ForMember(command => command.FileContent, opt => opt.MapFrom(dto => Convert.FromBase64String(dto.FileContent)))
                 .ForMember(command => command.DeleteAfterDownload, opt => opt.MapFrom(dto => dto.DeleteAfterDownload));
         }
     }

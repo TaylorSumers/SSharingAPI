@@ -2,12 +2,14 @@
 using Application.Commands.Strings.Upload;
 using Application.Queries.Strings.Get;
 using Application.Queries.Strings.GetList;
+using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 
 namespace SecretsSharingAPI.Controllers
 {
-    public class StringsController : BaseController
+    public class StringsController(IMediator mediator, IMapper mapper) : BaseController(mediator, mapper)
     {
         [HttpGet("{code}")]
         public async Task<ActionResult<StringVm>> Get(Guid code)

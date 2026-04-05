@@ -1,13 +1,15 @@
-﻿using Application.Commands.Files.Upload;
-using Application.Commands.Files.Delete;
+﻿using Application.Commands.Files.Delete;
+using Application.Commands.Files.Upload;
 using Application.Queries.Files.Get;
 using Application.Queries.Files.GetList;
+using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using SecretsSharingAPI.Models;
 
 namespace SecretsSharingAPI.Controllers
 {
-    public class FilesController : BaseController
+    public class FilesController(IMediator mediator, IMapper mapper) : BaseController(mediator, mapper)
     {
         [HttpGet("{code}")]
         public async Task<ActionResult<FileVm>> Get(Guid code)
@@ -45,6 +47,7 @@ namespace SecretsSharingAPI.Controllers
         public async Task<ActionResult<Guid>> Upload([FromBody] UploadFileDto uploadFileDto)
         {
             var uploadFileCommand = Mapper.Map<UploadFileCommand>(uploadFileDto);
+            uploadFileCommand.FileContent = Convert.FromBase64String(uploadFileDto.FileContent); // TODO: Вынести из конроллера
             var fileUrl = await Mediator.Send(uploadFileCommand);
             return Ok(fileUrl);
         }
