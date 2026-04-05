@@ -1,11 +1,17 @@
 ﻿using Application.Interfaces;
 using Domain;
+using Microsoft.AspNetCore.Identity;
 
 namespace Application.Commands.Users.Create
 {
     public class CreateUserCommandHandler : HandlerBase<CreateUserCommand>
     {
-        public CreateUserCommandHandler(ISecretsDbContext dbContext) : base(dbContext) { }
+        private readonly IPasswordHasher<User> _hasher;
+
+        public CreateUserCommandHandler(ISecretsDbContext dbContext, IPasswordHasher<User> hasher) : base(dbContext) 
+        {
+            _hasher = hasher;
+        }
 
         public async override Task Handle(CreateUserCommand request, CancellationToken cancellationToken)
         {
@@ -16,9 +22,10 @@ namespace Application.Commands.Users.Create
 
             var dbUser = new User
             {
-                Login = request.Login,
-                PasswordHash = request.Password.GetHashCode()
+                Login = request.Login
             };
+            dbUser.PasswordHash = _hasher.HashPassword(dbUser, request.Password);
+
             _dbContext.Users.Add(dbUser);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }

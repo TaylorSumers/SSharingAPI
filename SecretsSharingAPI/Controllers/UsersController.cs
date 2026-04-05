@@ -6,8 +6,8 @@ namespace SecretsSharingAPI.Controllers
 {
     public class UsersController : BaseController
     {
-        [HttpGet]
-        public async Task<ActionResult> GetId(GetUserIdQuery getUserIdQuery)
+        [HttpPost]
+        public async Task<ActionResult> Login(GetUserIdQuery getUserIdQuery)
         {
             int userId = await Mediator.Send(getUserIdQuery);
             return Ok(userId);
