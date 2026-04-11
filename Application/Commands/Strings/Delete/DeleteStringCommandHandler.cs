@@ -7,7 +7,7 @@ namespace Application.Commands.Strings.Delete
 {
     public class DeleteStringCommandHandler : HandlerBase<DeleteStringCommand>
     {
-        public DeleteStringCommandHandler(ISecretsDbContext dbContext, YandexStorageService storageService) : base(dbContext) { }
+        public DeleteStringCommandHandler(ISecretsDbContext dbContext) : base(dbContext) { }
 
         public async override Task Handle(DeleteStringCommand request, CancellationToken cancellationToken)
         {
